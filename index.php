@@ -50,34 +50,43 @@
             <div class="formbg-inner padding-horizontal--48">
               <span class="padding-bottom--15"></span>
               <form id="stripe-login" method="post">
-                <div class="field padding-bottom--24">
-                  <label for="text">Nombre</label>
-                  <input type="nombre" name="nombre" id="nombre">
-                </div>
-                <div class="field padding-bottom--24">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" id="email">
-                </div>
-                <div class="field padding-bottom--24">
-                  <label for="text">Celular</label>
-                  <input type="celular" name="celular" id="celular">
-                </div>
-                <div class="field padding-bottom--24">
+              <div class="field padding-bottom--24">
                   <label for="text">Matricula</label>
-                  <input type="matricula" name="matricula" id="matricula">
+                  <input type="text" name="matricula" id="matricula">
+                </div>
+                <div class="field padding-bottom--24">
+                  <label for="text">Nombre Materia</label>
+                  <input type="text" name="nombre" id="nombre">
+                </div>
+                <div class="field padding-bottom--24">
+                  <label for="text">Carrera</label>
+                  <input type="text" name="carrera" id="carrera">
+                </div>
+                
+                <div class="field padding-bottom--24">
+                  <label for="text">Grupo</label>
+                  <input type="text" name="grupo" id="grupo">
                 </div>
                 <div class="field padding-bottom--24">
                   <div class="grid--50-50">
-                    <label for="password">Password</label>
+                    <label for="text">Clave</label>
                   </div>
-                  <input type="password" name="password" id="password">
+                  <input type="number" name="clave" id="clave">
                 </div>
                
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="guardar" id="guardar" value="Continue">
+                  <input type="submit" name="guardar" id="guardar" value="Continuar">
                 </div>
                 <div class="field">
-                  <a class="ssolink" href="#">Use single sign-on (Google) instead</a>
+                  <a class="ssolink" href="#"></a>
+                </div>
+
+                <div class="field padding-bottom--24">
+                <a href="login.php" class="btn btn-primary">Inicia Sesion</a>
+
+                </div>
+                <div class="field">
+                  <a class="ssolink" href="#"></a>
                 </div>
               </form>
             </div>
@@ -107,35 +116,55 @@
 require_once 'db_conexion.php';
 
 ?>
+
+
+
+
+
 <?php
-if(isset($_POST["guardar"]))
-{
-    $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
-    $celular = $_POST['celular'];
-    $matricula = $_POST['matricula'];
-    $password = $_POST['password'];
-  
 
-       // $imgContent = addslashes(file_get_contents($imagen));     
-
-        $sql=$cnnPDO->prepare("INSERT INTO tienda
-            (nombre, email, celular, matricula, password ) VALUES (:nombre, :email, :celular, :matricula, :password)");
-
-        //Asignar el contenido de las variables a los parametros
-        $sql->bindParam(':nombre',$nombre);
-        $sql->bindParam(':email',$email);
-        $sql->bindParam(':celular',$celular);
-        $sql->bindParam(':matricula',$matricula);
-        $sql->bindParam(':password',$password);
-       
-      
-            header("location:index.php");
-
-        //Ejecutar la variable $sql
-        $sql->execute();
-        unset($sql);   
-
+class HashEncryption {
+    public function hash($data) {
+        return password_hash($data, PASSWORD_DEFAULT);
     }
+
+    public function verify($data, $hash) {
+        return password_verify($data, $hash);
+    }
+}
+
+if(isset($_POST["guardar"])) {
+    $nombre = $_POST['nombre'];
+    $carrera = $_POST['carrera'];
+    $matricula = $_POST['matricula'];
+    $grupo = $_POST['grupo'];
+    $clave = $_POST['clave'];
+  
+    // Crear una instancia de la clase de cifrado hash
+    $hasher = new HashEncryption();
+    
+    // Aplicar hash a la contraseña
+    $claveHash = $hasher->hash($clave);
+
+    // Insertar los datos cifrados en la base de datos
+    try {
+        $sql = $cnnPDO->prepare("INSERT INTO tienda (nombre, carrera, matricula, grupo, clave)
+            VALUES (:nombre, :carrera, :matricula, :grupo, :clave)");
+
+        //Asignar los datos cifrados a los parámetros
+        $sql->bindParam(':nombre', $nombre);
+        $sql->bindParam(':carrera', $carrera);
+        $sql->bindParam(':matricula', $matricula);
+        $sql->bindParam(':grupo', $grupo);
+        $sql->bindParam(':clave', $claveHash);
+        
+        $sql->execute();
+        unset($sql);
+
+        header("location:index.php");
+    } catch (PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+}
 
 ?>

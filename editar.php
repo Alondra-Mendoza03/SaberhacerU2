@@ -1,4 +1,31 @@
+<?php 
+require_once 'db_conexion.php';
 
+if(isset($_POST["editar"])) {
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $celular = $_POST['celular'];
+    $matricula = $_POST['matricula'];
+    $password = $_POST['password'];
+
+   
+    $id = $_POST['id']; 
+
+    $sql = $cnnPDO->prepare("UPDATE tienda SET
+        nombre = :nombre,  matricula = :matricula, carrera= :carrera
+        WHERE id = :id");
+
+    $sql->bindParam(':nombre', $nombre);
+    $sql->bindParam(':carrera', $carrera);
+    $sql->bindParam(':matricula', $matricula);
+    $sql->bindParam(':id', $id);
+    
+
+    $sql->execute();
+
+    header("location:welcome.php");
+}
+?>
 
 <html>
 <head>

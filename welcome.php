@@ -48,14 +48,15 @@
         
               <form  id="stripe-login" method="post">
              
-              <table class="table">
+               <table class="table"  style="width: 900px; margin-left: 250px; " >
         <thead class="table-warning">
             <tr>
+        <th scope="col">Id</th>
             <th scope="col">Nombre</th>
-            <th scope="col">carrera</th>
+            <th scope="col">Carrera</th>
             <th scope="col">Matricula</th>
             <th scope="col">Grupo</th>
-            <th scope="col">clave</th>
+            <th scope="col">Accion</th>
             
 
 

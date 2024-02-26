@@ -64,27 +64,36 @@
             </tr>
         </thead>
         <?php
-             require 'db_conexion.php';
-                $sql = "SELECT * FROM tienda";
-                $stmt = $cnnPDO->prepare($sql);
-                $stmt->execute();
-            ?>
-            <?php 
-	        while ($campo = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                   echo' <tbody>';
-                       echo' <tr>';
-                        echo'<th scope="row">'. $campo['nombre'].'</th>';
-                        echo'<td>'. $campo['carrera'].'</td>';
-                        echo'<td>'. $campo['matricula'].'</td>';
-                        echo'<td>'. $campo['grupo'].'</td>';
-                        echo'<td>'. $campo['clave'].'</td>';
-                        
-                        echo'</tr>';
-                   echo'</tbody>';
-          
-            }
-            ?>
+             include 'conn.php';
+
+$sql = "SELECT * FROM tienda";
+$resultado = $conexion->query($sql);
+
+while ($fila = $resultado->fetch_assoc()) {  ?>
+   
+
+
+    <tr>
+    <th scope="row"><?php echo $fila['id'] ?></th>
+    <td><?php echo $fila['nombre'] ?></td>
+              <td><?php echo $fila['carrera'] ?></td>
+              <td><?php echo $fila['matricula'] ?></td>
+              <td><?php echo $fila['grupo'] ?></td>
+      
+  
+     
+      <td>
  
+    <a href="editar.php?id=<?php echo $fila["id"]?>" class="btn btn-primary">Editar</a>
+</td>
+    </tr>
+
+   
+  </tbody>
+  <?php 
+}
+
+    ?> 
         
     
 </table>

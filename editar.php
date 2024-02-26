@@ -1,44 +1,28 @@
 <?php
-require 'db_conexion.php';
-require 'SymmetricEncryption.php'; 
+  require 'db_conexion.php';
+  
+    session_start();
+?>
+<?php
+if (isset($_POST['actualizar']))  
+{
+    $_SESSION['nombre']= $_POST ['nombre'];
+    $_SESSION['matricula']= $_POST ['matricula'];
+    $_SESSION['carrera']= $_POST ['carrera'];
 
-session_start();
-
-if (isset($_POST['actualizar'])) {
-    // Recuperar datos del formulario
-    $nombre = $_POST['nombre'];
-    $matricula = $_POST['matricula'];
-    $carrera = $_POST['carrera'];
+    $sql = $cnnPDO->prepare("UPDATE tienda SET  nombre =:nombre, matricula =:matricula, carrera=:carrera   WHERE nombre=:nombre");
+    $sql->bindParam(':nombre', $_SESSION['nombre']);
+    $sql->bindParam(':matricula', $_SESSION['matricula']);
+    $sql->bindParam(':carrera', $_SESSION['carrera']);
     
-    // Establecer la clave de cifrado
-    $encryptionKey = "8A!fz&2u9Dy@Q#Pb"; 
+    $sql->execute();
+    unset($sql);
+    unset($cnnPDO);
     
+    header("location:welcome.php");
     
-    $encryption = new SymmetricEncryption($encryptionKey);
-    
-    // Cifrar los datos
-    $nombreCifrado = $encryption->encrypt($nombre);
-    $matriculaCifrada = $encryption->encrypt($matricula);
-    $carreraCifrada = $encryption->encrypt($carrera);
-
-    // Actualizar los datos en la base de datos
-    try {
-        $sql = $cnnPDO->prepare("UPDATE tienda SET nombre = :nombre, matricula = :matricula, carrera = :carrera WHERE nombre = :nombre");
-        $sql->bindParam(':nombre', $nombreCifrado);
-        $sql->bindParam(':matricula', $matriculaCifrada);
-        $sql->bindParam(':carrera', $carreraCifrada);
-        
-        $sql->execute();
-        
-        unset($sql);
-        unset($cnnPDO);
-        
-        header("location: welcome.php");
-        exit();
-    } catch (PDOException $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
 }
+
 ?>
 
 <html>

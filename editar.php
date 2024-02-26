@@ -1,36 +1,50 @@
-<?php 
-require_once 'db_conexion.php';
+<?php
+require 'db_conexion.php';
+require 'SymmetricEncryption.php'; 
 
-if(isset($_POST["editar"])) {
+session_start();
+
+if (isset($_POST['actualizar'])) {
+    // Recuperar datos del formulario
     $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
-    $celular = $_POST['celular'];
     $matricula = $_POST['matricula'];
-    $password = $_POST['password'];
-
-   
-    $id = $_POST['id']; 
-
-    $sql = $cnnPDO->prepare("UPDATE tienda SET
-        nombre = :nombre,  matricula = :matricula, carrera= :carrera
-        WHERE id = :id");
-
-    $sql->bindParam(':nombre', $nombre);
-    $sql->bindParam(':carrera', $carrera);
-    $sql->bindParam(':matricula', $matricula);
-    $sql->bindParam(':id', $id);
+    $carrera = $_POST['carrera'];
     
+    // Establecer la clave de cifrado
+    $encryptionKey = "8A!fz&2u9Dy@Q#Pb"; 
+    
+    
+    $encryption = new SymmetricEncryption($encryptionKey);
+    
+    // Cifrar los datos
+    $nombreCifrado = $encryption->encrypt($nombre);
+    $matriculaCifrada = $encryption->encrypt($matricula);
+    $carreraCifrada = $encryption->encrypt($carrera);
 
-    $sql->execute();
-
-    header("location:welcome.php");
+    // Actualizar los datos en la base de datos
+    try {
+        $sql = $cnnPDO->prepare("UPDATE tienda SET nombre = :nombre, matricula = :matricula, carrera = :carrera WHERE nombre = :nombre");
+        $sql->bindParam(':nombre', $nombreCifrado);
+        $sql->bindParam(':matricula', $matriculaCifrada);
+        $sql->bindParam(':carrera', $carreraCifrada);
+        
+        $sql->execute();
+        
+        unset($sql);
+        unset($cnnPDO);
+        
+        header("location: welcome.php");
+        exit();
+    } catch (PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
 }
 ?>
 
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Stackfindover: Sign in</title>
+  <title>Editar</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -107,32 +121,24 @@ $Fila=$resultado->fetch_assoc();
                
                
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="editar" id="editar" value="Continuar">
+                  <input type="submit" name="actualizar" id="actualizar" value="actualizar">
                 </div>
                 <div class="field">
                   <a class="ssolink" href="#"></a>
                 </div>
 
-                <div class="field padding-bottom--24">
-                <a href="login.php" class="btn btn-primary">Inicia Sesion</a>
-
-                </div>
-                <div class="field">
-                  <a class="ssolink" href="#"></a>
-                </div>
+                
               </form>
             </div>
           </div>
-          <div class="footer-link padding-top--24">
-            <span>Don't have an account? <a href="">Sign up</a></span>
-            <div class="listing padding-top--24 padding-bottom--24 flex-flex center-center">
-              <span><a href="#">© Stackfindover</a></span>
-              <span><a href="#">Contact</a></span>
-              <span><a href="#">Privacy & terms</a></span>
-            </div>
-          </div>
+          
         </div>
       </div>
+    </div>
+  </div>
+</body>
+
+</html>
     </div>
   </div>
 </body>

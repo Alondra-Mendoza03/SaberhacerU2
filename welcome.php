@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Materias registradas</title>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
@@ -48,23 +49,25 @@
         
               <form  id="stripe-login" method="post">
              
-               <table class="table"  style="width: 900px; margin-left: 250px; " >
-        <thead class="table-warning">
+              <table class="table"  style="width: 900px; margin-left: 250px; " >
+        <thead class="table-warning" style="background-color: rgb(84, 105, 212); " >
             <tr>
-        <th scope="col">Id</th>
+            <th scope="col">Id</th>
             <th scope="col">Nombre</th>
             <th scope="col">Carrera</th>
             <th scope="col">Matricula</th>
             <th scope="col">Grupo</th>
             <th scope="col">Accion</th>
             
+            
 
 
 
             </tr>
         </thead>
-        <?php
-             include 'conn.php';
+        <?php 
+
+include 'conn.php';
 
 $sql = "SELECT * FROM tienda";
 $resultado = $conexion->query($sql);

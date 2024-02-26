@@ -50,27 +50,28 @@
             <div class="formbg-inner padding-horizontal--48">
               <span class="padding-bottom--15"></span>
               <form id="stripe-login" method="post">
+              <div class="field padding-bottom--24">
+                  <label for="text">Matricula</label>
+                  <input type="text" name="matricula" id="matricula">
+                </div>
                 <div class="field padding-bottom--24">
                   <label for="text">Nombre Materia</label>
-                  <input type="nombre" name="nombre" id="nombre">
+                  <input type="text" name="nombre" id="nombre">
                 </div>
                 <div class="field padding-bottom--24">
                   <label for="text">Carrera</label>
-                  <input type="carrera" name="carrera" id="carrera">
+                  <input type="text" name="carrera" id="carrera">
                 </div>
-                <div class="field padding-bottom--24">
-                  <label for="text">Cuatrimestre</label>
-                  <input type="cuatrimestre" name="cuatrimestre" id="cuatrimestre">
-                </div>
+                
                 <div class="field padding-bottom--24">
                   <label for="text">Grupo</label>
-                  <input type="grupo" name="grupo" id="grupo">
+                  <input type="text" name="grupo" id="grupo">
                 </div>
                 <div class="field padding-bottom--24">
                   <div class="grid--50-50">
                     <label for="text">Clave</label>
                   </div>
-                  <input type="clave" name="clave" id="clave">
+                  <input type="number" name="clave" id="clave">
                 </div>
                
                 <div class="field padding-bottom--24">
@@ -81,7 +82,8 @@
                 </div>
 
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="guardar" id="guardar" value="Iniciar sesion">
+                <a href="login.php" class="btn btn-primary">Inicia Sesion</a>
+
                 </div>
                 <div class="field">
                   <a class="ssolink" href="#"></a>
@@ -134,7 +136,7 @@ class HashEncryption {
 if(isset($_POST["guardar"])) {
     $nombre = $_POST['nombre'];
     $carrera = $_POST['carrera'];
-    $cuatrimestre = $_POST['cuatrimestre'];
+    $matricula = $_POST['matricula'];
     $grupo = $_POST['grupo'];
     $clave = $_POST['clave'];
   
@@ -146,13 +148,13 @@ if(isset($_POST["guardar"])) {
 
     // Insertar los datos cifrados en la base de datos
     try {
-        $sql = $cnnPDO->prepare("INSERT INTO tienda (nombre, carrera, cuatrimestre, grupo, clave)
-            VALUES (:nombre, :carrera, :cuatrimestre, :grupo, :clave)");
+        $sql = $cnnPDO->prepare("INSERT INTO tienda (nombre, carrera, matricula, grupo, clave)
+            VALUES (:nombre, :carrera, :matricula, :grupo, :clave)");
 
         //Asignar los datos cifrados a los parámetros
         $sql->bindParam(':nombre', $nombre);
         $sql->bindParam(':carrera', $carrera);
-        $sql->bindParam(':cuatrimestre', $cuatrimestre);
+        $sql->bindParam(':matricula', $matricula);
         $sql->bindParam(':grupo', $grupo);
         $sql->bindParam(':clave', $claveHash);
         

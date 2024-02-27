@@ -46,7 +46,7 @@
         <div class="box-root padding-top--58 padding-bottom--24 flex-flex flex-justifyContent--center" >
           <h1><a href="http://blog.stackfindover.com/" rel="dofollow">Materias</a></h1>
         </div>
-        
+        <a href="index.php" class="btn btn-primary" style="width: 250px; margin-left: 100px;">Registra Nueva Materia</a>
               <form  id="stripe-login" method="post">
              
               <table class="table"  style="width: 900px; margin-left: 250px; " >

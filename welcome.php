@@ -49,7 +49,7 @@
         <a href="index.php" class="btn btn-primary" style="width: 250px; margin-left: 100px;">Registra Nueva Materia</a>
               <form  id="stripe-login" method="post">
              
-              <table class="table"  style="width: 900px; margin-left: 250px; " >
+              <table class="table"  style="width: 900px; margin-left: 250px; margin-top: 50px; " >
         <thead class="table-warning" style="background-color: rgb(84, 105, 212); " >
             <tr>
             <th scope="col">Id</th>

@@ -4,13 +4,13 @@
     session_start();
 ?>
 <?php
-if (isset($_POST['actualizar']))  
+if (isset($_POST['editar']))  
 {
     $_SESSION['nombre']= $_POST ['nombre'];
     $_SESSION['matricula']= $_POST ['matricula'];
     $_SESSION['carrera']= $_POST ['carrera'];
 
-    $sql = $cnnPDO->prepare("UPDATE tienda SET  nombre =:nombre, matricula =:matricula, carrera=:carrera   WHERE nombre=:nombre");
+    $sql = $cnnPDO->prepare("UPDATE tienda SET  nombre =:nombre, matricula =:matricula, carrera =:carrera   WHERE matricula =:matricula");
     $sql->bindParam(':nombre', $_SESSION['nombre']);
     $sql->bindParam(':matricula', $_SESSION['matricula']);
     $sql->bindParam(':carrera', $_SESSION['carrera']);
@@ -18,10 +18,7 @@ if (isset($_POST['actualizar']))
     $sql->execute();
     unset($sql);
     unset($cnnPDO);
-    
-    header("location:welcome.php");
-    
-}
+    }
 
 ?>
 
@@ -105,7 +102,7 @@ $Fila=$resultado->fetch_assoc();
                
                
                 <div class="field padding-bottom--24">
-                  <input type="submit" name="actualizar" id="actualizar" value="actualizar">
+                  <input type="submit" name="editar" id="editar" value="Continuar">
                 </div>
                 <div class="field">
                   <a class="ssolink" href="#"></a>
@@ -118,11 +115,6 @@ $Fila=$resultado->fetch_assoc();
           
         </div>
       </div>
-    </div>
-  </div>
-</body>
-
-</html>
     </div>
   </div>
 </body>
